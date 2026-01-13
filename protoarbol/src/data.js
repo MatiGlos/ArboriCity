@@ -1,6 +1,6 @@
 export const MOCK_ARBOLES = [
   // ... tus datos actuales si deseas mantenerlos
-  ...Array.from({ length: 5000 }).map((_, i) => {
+  ...Array.from({ length: 1000 }).map((_, i) => {
     const especies = [
       { nom: "Peumo", cien: "Cryptocarya alba", esp: "Lauraceae" },
       { nom: "Boldo", cien: "Peumus boldus", esp: "Monimiaceae" },
