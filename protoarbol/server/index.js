@@ -27,9 +27,9 @@ const pool = new Pool({
 // Probar conexión al iniciar
 pool.connect((err, client, release) => {
   if (err) {
-    return console.error('❌ Error adquiriendo cliente:', err.stack);
+    return console.error('Error adquiriendo cliente:', err.stack);
   }
-  console.log('🚀 Conexión exitosa a Supabase PostgreSQL');
+  console.log('Conexión exitosa a Supabase PostgreSQL');
   release();
 });
 
