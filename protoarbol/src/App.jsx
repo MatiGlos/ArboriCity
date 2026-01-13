@@ -3,6 +3,9 @@ import { TreePine, Leaf, X, LayoutDashboard, Map as MapIcon, Upload, Image as Im
 import MapaPrincipal from './MapaPrincipal';
 import Dashboard from './Dashboard';
 
+// OJO: Solo cambiamos esto para manejar la URL de forma centralizada
+const API_BASE_URL = 'http://localhost:5000/api/arboles';
+
 function App() {
   const [arboles, setArboles] = useState([]);
   const [arbolSeleccionado, setArbolSeleccionado] = useState(null);
@@ -13,9 +16,9 @@ function App() {
   const [filters, setFilters] = useState({ species: '', estado: '' });
   const [editando, setEditando] = useState(false);
 
-  // CARGA INICIAL
+  // CARGA INICIAL - Actualizado con API_BASE_URL
   useEffect(() => {
-    fetch('http://localhost:5000/api/arboles')
+    fetch(API_BASE_URL)
       .then(res => res.json())
       .then(data => setArboles(data))
       .catch(err => console.error("Error al cargar:", err));
@@ -61,7 +64,8 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/arboles', {
+      // Actualizado con API_BASE_URL
+      const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nuevo)
@@ -90,7 +94,8 @@ function App() {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/arboles/${arbolSeleccionado.id_arbol}`, {
+      // Actualizado con API_BASE_URL e ID
+      const response = await fetch(`${API_BASE_URL}/${arbolSeleccionado.id_arbol}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editadoData)
@@ -108,14 +113,15 @@ function App() {
   const handleEliminarArbol = async (id) => {
     if (window.confirm("¿Eliminar este árbol?")) {
       try {
-        await fetch(`http://localhost:5000/api/arboles/${id}`, { method: 'DELETE' });
+        // Actualizado con API_BASE_URL e ID
+        await fetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' });
         setArboles(arboles.filter(a => a.id_arbol !== id));
         setArbolSeleccionado(null);
       } catch (err) { alert("Error al eliminar"); }
     }
   };
 
-  // color de estado
+  // color de estado (se mantiene igual)
   const getEstadoColor = (estado) => {
     const e = (estado || '').toLowerCase();
     if (e === 'saludable') return 'text-green-600';
@@ -163,7 +169,6 @@ function App() {
               />
             </main>
 
-            {/* formulario izquierdo */}
             {(nuevoArbolCoords || editando) && (
               <aside className="absolute z-[1000] left-10 top-20 bg-white p-6 rounded-2xl shadow-2xl border w-80 max-h-[85vh] overflow-y-auto">
                 <div className="flex justify-between mb-4 border-b pb-2">
@@ -227,7 +232,6 @@ function App() {
               </aside>
             )}
 
-            {/* tabla derecha */}
             <aside className={`fixed right-0 top-0 h-full bg-white shadow-2xl transition-all duration-300 z-[1001] ${arbolSeleccionado && !editando ? 'w-[400px]' : 'w-0 overflow-hidden'}`}>
               {arbolSeleccionado && (
                 <div className="w-[400px] flex flex-col h-full border-l">
